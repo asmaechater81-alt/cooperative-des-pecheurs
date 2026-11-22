@@ -1,9 +1,12 @@
-function App() {
+import StatsRecettes from "./components/StatsRecettes";
+import ListeMembres from "./components/ListeMembres";
+
+export default function App() {
   return (
-    <div>
-      <h1>Coopérative des Pêcheurs</h1>
-    </div>
+    <main>
+      <h1>Coopérative de pêcheurs</h1>
+      <StatsRecettes />
+      <ListeMembres />
+    </main>
   );
 }
-
-export default App;
