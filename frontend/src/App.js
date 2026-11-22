@@ -1,5 +1,7 @@
+import "./App.css";
 import StatsRecettes from "./components/StatsRecettes";
 import ListeMembres from "./components/ListeMembres";
+import TableCaptures from "./components/TableCaptures";
 
 export default function App() {
   return (
@@ -7,6 +9,7 @@ export default function App() {
       <h1>Coopérative de pêcheurs</h1>
       <StatsRecettes />
       <ListeMembres />
+      <TableCaptures />
     </main>
   );
 }

@@ -1,38 +1,208 @@
-.App {
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=Inter:wght@300;400&display=swap");
+
+:root {
+  --cream: #fff8f1;
+  --ash: #e2e8f0;
+  --ink: #000000;
+  --blue: #006eff;
+
+  --font-serif: "Cormorant Garamond", "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Toute la typographie est resserrée (-0.02em), sans ombre ni dégradé */
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  font-feature-settings: "clig", "liga";
+  color: var(--ink);
+  background: var(--cream);
+}
+
+/* Marges de page : 144px sur grand écran, réduites sur petit écran */
+main {
+  padding: 0 clamp(20px, 10vw, 144px) 96px;
+}
+
+/* Titre principal : serif ultra fin, bleu, centré */
+h1 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(56px, 9vw, 120px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--blue);
   text-align: center;
+  margin: 0;
+  padding: clamp(48px, 8vw, 120px) 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Titres de section : grotesque léger, bleu, centrés */
+h2 {
+  font-weight: 300;
+  font-size: 38px;
+  line-height: 1.2;
+  color: var(--blue);
+  text-align: center;
+  margin: 0 0 32px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h3 {
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--blue);
+  margin: 24px 0 8px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Sections : pas de carte, juste un trait fin et beaucoup d'air */
+section {
+  padding: clamp(48px, 7vw, 96px) 0;
+  border-top: 1.5px solid var(--ash);
+}
+
+/* Listes : lignes séparées par des traits fins, colonne étroite */
+ul {
+  list-style: none;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--ash);
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+b {
+  font-weight: 400;
+  color: var(--blue);
+}
+
+/* Champ de recherche : rectangle à contour fin, centré */
+input {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  margin: 0 auto 24px;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ash);
+  border-radius: 0;
+  padding: 14px 20px;
+}
+
+input::placeholder {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+/* Boutons : pilule 60px, contour bleu, jamais remplie */
+button {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: transparent;
+  border: 1.5px solid var(--blue);
+  border-radius: 60px;
+  padding: 10px 30px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: rgba(0, 110, 255, 0.08);
+}
+
+button:disabled {
+  color: rgba(0, 110, 255, 0.4);
+  border-color: var(--ash);
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+/* Tableau : uniquement des traits fins */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 32px;
+}
+
+th {
+  text-align: left;
+  font-weight: 300;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--blue);
+  padding: 0 16px 14px 0;
+  border-bottom: 1.5px solid var(--ash);
+}
+
+/* Les boutons de tri restent des textes simples dans l'en-tête */
+th button {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+th button:hover:not(:disabled) {
+  background: transparent;
+  text-decoration: underline;
+}
+
+td {
+  padding: 14px 16px 14px 0;
+  border-bottom: 1px solid var(--ash);
+}
+
+/* Pagination centrée */
+section > div {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  gap: 24px;
+  font-weight: 300;
+  color: var(--blue);
 }
 
-.App-link {
-  color: #61dafb;
+/* Étiquettes de statut : pilule à contour */
+.badge {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding: 2px 14px;
+  border: 1.5px solid var(--blue);
+  border-radius: 60px;
+  color: var(--blue);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.badge-ok {
+  border-color: var(--ash);
+  color: var(--ink);
 }
