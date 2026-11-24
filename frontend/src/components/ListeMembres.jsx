@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ListeMembres({ membres }) {
+export default function ListeMembres({ membres, onAjouter, onEditer, onSupprimer }) {
   const [recherche, setRecherche] = useState("");
   const q = recherche.toLowerCase();
 
@@ -10,7 +10,10 @@ export default function ListeMembres({ membres }) {
 
   return (
     <section>
-      <h2>Membres</h2>
+      <div className="entete-section">
+        <h2>Membres ({membres.length})</h2>
+        <button onClick={onAjouter}>Ajouter un membre</button>
+      </div>
       <input
         type="search"
         placeholder="Rechercher par nom, prénom ou CIN"
@@ -19,8 +22,19 @@ export default function ListeMembres({ membres }) {
       />
       <ul>
         {resultats.map((m) => (
-          <li key={m.id}>
-            {m.prenom} {m.nom} ({m.cin}) : {m.statut}
+          <li key={m.id} className="membre-ligne">
+            <span>
+              {m.prenom} {m.nom} ({m.cin}){" "}
+              <span className={m.statut === "ACTIF" ? "badge badge-ok" : "badge badge-attente"}>
+                {m.statut}
+              </span>
+            </span>
+            <div className="actions">
+              <button onClick={() => onEditer(m)}>Modifier</button>
+              <button className="btn-supprimer" onClick={() => onSupprimer(m.id)}>
+                Supprimer
+              </button>
+            </div>
           </li>
         ))}
         {resultats.length === 0 && <li>Aucun membre trouvé.</li>}

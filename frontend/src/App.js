@@ -4,6 +4,7 @@ import StatsRecettes from "./components/StatsRecettes";
 import ListeMembres from "./components/ListeMembres";
 import TableCaptures from "./components/TableCaptures";
 import FormulaireCapture from "./components/FormulaireCapture";
+import FormulaireMembre from "./components/FormulaireMembre";
 import "./App.css";
 
 export default function App() {
@@ -11,42 +12,39 @@ export default function App() {
   const [captures, setCaptures] = useState(() => service.getToutesCaptures());
   const [membres, setMembres] = useState(() => service.getTousMembres());
 
-  // Formulaire : affiché ou non, et capture en cours de modification (null = ajout)
-  const [showForm, setShowForm] = useState(false);
-  const [captureEdit, setCaptureEdit] = useState(null);
+  // null = aucun formulaire ; sinon { type: "capture" | "membre", element: objet ou null }
+  const [formulaire, setFormulaire] = useState(null);
+  const [erreur, setErreur] = useState("");
 
   const recharger = () => {
     setCaptures(service.getToutesCaptures());
     setMembres(service.getTousMembres());
   };
 
-  // CREATE
+  const ouvrir = (type, element = null) => {
+    setErreur("");
+    setFormulaire({ type, element });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const fermer = () => {
+    setErreur("");
+    setFormulaire(null);
+  };
+
+  // ---------- CAPTURES ----------
   const ajouterCapture = (donnees) => {
     service.ajouterCapture(donnees);
     recharger();
-    setShowForm(false);
+    fermer();
   };
 
-  // UPDATE
   const modifierCapture = (id, donnees) => {
     service.modifierCapture(id, donnees);
     recharger();
-    setCaptureEdit(null);
-    setShowForm(false);
+    fermer();
   };
 
-const editerCapture = (capture) => {
-  setCaptureEdit(capture);
-  setShowForm(true);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
-
-  const annulerFormulaire = () => {
-    setCaptureEdit(null);
-    setShowForm(false);
-  };
-
-  // Valider / supprimer
   const validerCapture = (id) => {
     service.validerCapture(id);
     recharger();
@@ -59,35 +57,87 @@ const editerCapture = (capture) => {
     }
   };
 
+  // ---------- MEMBRES ----------
+  const ajouterMembre = (donnees) => {
+    if (service.cinExiste(donnees.cin)) {
+      setErreur("Ce CIN est déjà utilisé par un autre membre.");
+      return;
+    }
+    service.ajouterMembre(donnees);
+    recharger();
+    fermer();
+  };
+
+  const modifierMembre = (id, donnees) => {
+    if (service.cinExiste(donnees.cin, id)) {
+      setErreur("Ce CIN est déjà utilisé par un autre membre.");
+      return;
+    }
+    service.modifierMembre(id, donnees);
+    recharger();
+    fermer();
+  };
+
+  const supprimerMembre = (id) => {
+    if (service.membreACaptures(id)) {
+      window.alert(
+        "Impossible de supprimer ce membre : il a des captures enregistrées. " +
+          "Passez plutôt son statut à INACTIF."
+      );
+      return;
+    }
+    if (window.confirm("Voulez-vous vraiment supprimer ce membre ?")) {
+      service.supprimerMembre(id);
+      recharger();
+    }
+  };
+
   return (
     <main>
       <h1>Coopérative de pêcheurs</h1>
       <StatsRecettes stats={service.getStatistiques()} tauxFrais={service.tauxFrais} />
 
-      {!showForm && (
+      {!formulaire && (
         <section>
-          <button className="btn-primary" onClick={() => setShowForm(true)}>
+          <button className="btn-primary" onClick={() => ouvrir("capture")}>
             Ajouter une capture
           </button>
         </section>
       )}
 
-      {showForm && (
+      {formulaire && formulaire.type === "capture" && (
         <FormulaireCapture
-          key={captureEdit ? captureEdit.id : "nouvelle"}
-          capture={captureEdit}
+          key={"capture-" + (formulaire.element ? formulaire.element.id : "nouvelle")}
+          capture={formulaire.element}
           membres={membres}
           onAjouter={ajouterCapture}
           onModifier={modifierCapture}
-          onAnnuler={annulerFormulaire}
+          onAnnuler={fermer}
         />
       )}
 
-      <ListeMembres membres={membres} />
+      {formulaire && formulaire.type === "membre" && (
+        <FormulaireMembre
+          key={"membre-" + (formulaire.element ? formulaire.element.id : "nouveau")}
+          membre={formulaire.element}
+          erreur={erreur}
+          onAjouter={ajouterMembre}
+          onModifier={modifierMembre}
+          onAnnuler={fermer}
+        />
+      )}
+
+      <ListeMembres
+        membres={membres}
+        onAjouter={() => ouvrir("membre")}
+        onEditer={(m) => ouvrir("membre", m)}
+        onSupprimer={supprimerMembre}
+      />
+
       <TableCaptures
         captures={captures}
         nomMembre={(id) => service.getNomMembre(id)}
-        onEditer={editerCapture}
+        onEditer={(c) => ouvrir("capture", c)}
         onValider={validerCapture}
         onSupprimer={supprimerCapture}
       />

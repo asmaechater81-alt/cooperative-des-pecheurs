@@ -65,7 +65,17 @@ class GestionCooperativeService {
     const m = this.membres.find((x) => x.id === id);
     return m ? `${m.prenom} ${m.nom}` : "?";
   }
+  // CIN déjà utilisé par un autre membre ? (ignoreId sert pour la modification)
+  cinExiste(cin, ignoreId = null) {
+    return this.membres.some(
+      (m) => m.cin.toLowerCase() === cin.toLowerCase() && m.id !== ignoreId
+    );
+  }
 
+  // Le membre a-t-il au moins une capture ?
+  membreACaptures(id) {
+    return this.captures.some((c) => c.membreId === id);
+  }
   //STATISTIQUES
   getStatistiques() {
     const validees = this.captures.filter((c) => c.statut === "VALIDEE");

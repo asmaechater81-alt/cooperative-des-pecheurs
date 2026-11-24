@@ -322,3 +322,37 @@ td .actions button {
   background: var(--wine);
   color: var(--white);
 }
+/* Titre de section + bouton d'ajout sur la même ligne */
+.entete-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.entete-section h2 {
+  margin: 0;
+}
+
+/* Une ligne de membre : texte à gauche, actions à droite */
+.membre-ligne {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.membre-ligne .actions button {
+  font-size: 14px;
+  padding: 4px 12px;
+}
+
+/* Message d'erreur du formulaire */
+.erreur {
+  color: var(--wine);
+  font-weight: 700;
+  margin: 0 0 20px;
+}
