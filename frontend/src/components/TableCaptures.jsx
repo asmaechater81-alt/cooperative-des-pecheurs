@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const PAR_PAGE = 5;
 
-export default function TableCaptures({ captures, nomMembre }) {
+export default function TableCaptures({ captures, nomMembre, onEditer, onValider, onSupprimer }) {
   const [tri, setTri] = useState({ cle: "date", sens: 1 });
   const [page, setPage] = useState(1);
 
@@ -35,23 +35,44 @@ export default function TableCaptures({ captures, nomMembre }) {
             <th>Kg</th>
             <th>Montant</th>
             <th>Statut</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {visibles.map((c) => (
-            <tr key={c.id}>
-              <td>{nomMembre(c.membreId)}</td>
-              <td>{c.date}</td>
-              <td>{c.espece}</td>
-              <td>{c.quantiteKg}</td>
-              <td>{c.calculerMontant()} MAD</td>
-              <td>
-                <span className={c.statut === "VALIDEE" ? "badge badge-ok" : "badge badge-attente"}>
-                  {c.statut}
-                </span>
-              </td>
-            </tr>
-          ))}
+          {visibles.map((c) => {
+            const enAttente = c.statut === "EN_ATTENTE";
+            return (
+              <tr key={c.id}>
+                <td>{nomMembre(c.membreId)}</td>
+                <td>{c.date}</td>
+                <td>{c.espece}</td>
+                <td>{c.quantiteKg}</td>
+                <td>{c.calculerMontant()} MAD</td>
+                <td>
+                  <span className={enAttente ? "badge badge-attente" : "badge badge-ok"}>
+                    {c.statut}
+                  </span>
+                </td>
+                <td>
+                  <div className="actions">
+                    <button
+                      onClick={() => onEditer(c)}
+                      disabled={!enAttente}
+                      title={enAttente ? "Modifier la capture" : "Une capture validée ne peut plus être modifiée"}
+                    >
+                      Modifier
+                    </button>
+                    {enAttente && (
+                      <button onClick={() => onValider(c.id)}>Valider</button>
+                    )}
+                    <button className="btn-supprimer" onClick={() => onSupprimer(c.id)}>
+                      Supprimer
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <div>

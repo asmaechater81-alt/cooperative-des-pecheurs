@@ -35,10 +35,11 @@ export default function App() {
     setShowForm(false);
   };
 
-  const editerCapture = (capture) => {
-    setCaptureEdit(capture);
-    setShowForm(true);
-  };
+const editerCapture = (capture) => {
+  setCaptureEdit(capture);
+  setShowForm(true);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 
   const annulerFormulaire = () => {
     setCaptureEdit(null);

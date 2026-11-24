@@ -299,3 +299,26 @@ select:focus {
     grid-template-columns: 1fr;
   }
 }
+/* Colonne d'actions du tableau */
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+td .actions button {
+  font-size: 14px;
+  padding: 4px 12px;
+}
+
+/* Supprimer : contour et texte bordeaux (le style n'a pas de rouge) */
+.btn-supprimer {
+  color: var(--wine);
+  background: var(--white);
+  border-color: var(--wine);
+}
+
+.btn-supprimer:hover:not(:disabled) {
+  background: var(--wine);
+  color: var(--white);
+}
