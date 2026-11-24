@@ -356,3 +356,23 @@ td .actions button {
   font-weight: 700;
   margin: 0 0 20px;
 }
+/* Message d'information (succès) */
+.info {
+  color: var(--lagoon);
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+/* Tableau large : défilement horizontal sur petit écran */
+.table-scroll {
+  display: block;
+  overflow-x: auto;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Ligne de totaux sous le tableau */
+.total-ligne {
+  margin: 0;
+  color: var(--ink);
+}
