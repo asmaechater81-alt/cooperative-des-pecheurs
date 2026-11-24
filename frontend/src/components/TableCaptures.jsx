@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { captures, montantCapture, nomMembre } from "../data/donnees";
 
 const PAR_PAGE = 5;
 
-export default function TableCaptures() {
+export default function TableCaptures({ captures, nomMembre }) {
   const [tri, setTri] = useState({ cle: "date", sens: 1 });
   const [page, setPage] = useState(1);
 
@@ -15,8 +14,9 @@ export default function TableCaptures() {
     return (x > y ? 1 : x < y ? -1 : 0) * tri.sens;
   });
 
-  const nbPages = Math.ceil(tries.length / PAR_PAGE);
-  const visibles = tries.slice((page - 1) * PAR_PAGE, page * PAR_PAGE);
+  const nbPages = Math.max(1, Math.ceil(tries.length / PAR_PAGE));
+  const pageCourante = Math.min(page, nbPages);
+  const visibles = tries.slice((pageCourante - 1) * PAR_PAGE, pageCourante * PAR_PAGE);
 
   const trier = (cle) => {
     setTri((t) => ({ cle, sens: t.cle === cle ? -t.sens : 1 }));
@@ -44,20 +44,22 @@ export default function TableCaptures() {
               <td>{c.date}</td>
               <td>{c.espece}</td>
               <td>{c.quantiteKg}</td>
-              <td>{montantCapture(c)} MAD</td>
-              <td><span className={c.statut === "VALIDEE" ? "badge badge-ok" : "badge"}>{c.statut}
-             </span>
+              <td>{c.calculerMontant()} MAD</td>
+              <td>
+                <span className={c.statut === "VALIDEE" ? "badge badge-ok" : "badge badge-attente"}>
+                  {c.statut}
+                </span>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div>
-        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+        <button disabled={pageCourante === 1} onClick={() => setPage(pageCourante - 1)}>
           Précédent
         </button>
-        <span> Page {page} / {nbPages} </span>
-        <button disabled={page === nbPages} onClick={() => setPage(page + 1)}>
+        <span> Page {pageCourante} / {nbPages} </span>
+        <button disabled={pageCourante === nbPages} onClick={() => setPage(pageCourante + 1)}>
           Suivant
         </button>
       </div>

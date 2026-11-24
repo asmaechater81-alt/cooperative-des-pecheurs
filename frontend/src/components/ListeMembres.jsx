@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { membres } from "../data/donnees";
 
-export default function ListeMembres() {
+export default function ListeMembres({ membres }) {
   const [recherche, setRecherche] = useState("");
   const q = recherche.toLowerCase();
 
-  const resultats = membres.filter((m) =>[m.nom, m.prenom, m.cin].some((champ) => champ.toLowerCase().includes(q))
+  const resultats = membres.filter((m) =>
+    [m.nom, m.prenom, m.cin].some((champ) => champ.toLowerCase().includes(q))
   );
 
   return (
