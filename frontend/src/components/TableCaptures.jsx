@@ -47,7 +47,7 @@ export default function TableCaptures({ captures, nomMembre, onEditer, onValider
                 <td>{c.date}</td>
                 <td>{c.espece}</td>
                 <td>{c.quantiteKg}</td>
-                <td>{c.calculerMontant()} MAD</td>
+                <td>{c.montantTotal} MAD</td>
                 <td>
                   <span className={enAttente ? "badge badge-attente" : "badge badge-ok"}>
                     {c.statut}

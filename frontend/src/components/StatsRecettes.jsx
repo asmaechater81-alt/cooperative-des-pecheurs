@@ -1,6 +1,6 @@
 export default function StatsRecettes({ stats, tauxFrais }) {
   return (
-    <section>
+    <section className="bande-sombre">
       <h2>Recettes de la coopérative</h2>
       <ul>
         <li>Recettes brutes : <b>{stats.montantBrut} MAD</b></li>

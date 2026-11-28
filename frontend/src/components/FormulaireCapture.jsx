@@ -2,8 +2,8 @@ import { useState } from "react";
 
 const ESPECES = ["Sardine", "Pageot", "Sole", "Poulpe", "Thon", "Merlu"];
 
-export default function FormulaireCapture({ capture, membres, onAjouter, onModifier, onAnnuler }) {
-  // Si "capture" existe, on est en modification : on pré-remplit le formulaire
+export default function FormulaireCapture({ capture, membres, erreur, onAjouter, onModifier, onAnnuler }) {
+
   const [form, setForm] = useState({
     membreId: capture ? capture.membreId : "",
     date: capture ? capture.date : new Date().toISOString().slice(0, 10),
@@ -81,7 +81,7 @@ export default function FormulaireCapture({ capture, membres, onAjouter, onModif
         </div>
 
         <p className="montant-direct">Montant de la capture : <b>{montant} MAD</b></p>
-
+        {erreur && <p className="erreur">{erreur}</p>}
         <div className="form-actions">
           <button type="submit" className="btn-primary">
             {capture ? "Enregistrer les modifications" : "Ajouter la capture"}
